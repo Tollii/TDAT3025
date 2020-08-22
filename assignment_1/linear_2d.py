@@ -5,9 +5,6 @@ import matplotlib.pyplot as plt
 x_train = [] # length
 y_train = [] # weight
 
-# x_train = torch.tensor([1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 6.0]).reshape(-1, 1)
-# y_train = torch.tensor([5.0, 3.5, 3.0, 4.0, 3.0, 1.5, 2.0]).reshape(-1, 1) 
-
 with open('./data/length_weight.csv') as file:
     comment = file.readline()
 
@@ -26,6 +23,7 @@ class LinearRegressionModel:
     def __init__(self):
         self.W = torch.tensor([[0.0]], requires_grad=True)
         self.b = torch.tensor([[0.0]], requires_grad=True)
+        self.state = {}
 
     def f(self, x):
         return x @ self.W + self.b
@@ -35,14 +33,19 @@ class LinearRegressionModel:
 
 model = LinearRegressionModel()
 
-optimizer = torch.optim.RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.SGD([model.b, model.W], 0.01)
-
-for epoch in range(100):
-    print(f'Weight {epoch}: {model.W}')
-    print(f'Bias {epoch}: {model.b}')
+optimizer = torch.optim.SGD([model.b, model.W], 0.00001)
+for epoch in range(2000000):
+#     print(f'Weight {epoch}: {model.W}')
+#     print(f'Bias {epoch}: {model.b}')
     model.loss(x_train, y_train).backward()
     optimizer.step()
     optimizer.zero_grad()
+
+optimizer = torch.optim.SGD([model.b, model.W], 0.00001)
+
+model.state = { 'bias': model.b, 'weight': model.W }
+
+torch.save(model.state, './models/linear_2d')
 
 print("W = %s, b = %s, loss = %s" % (model.W, model.b, model.loss(x_train, y_train)))
 
