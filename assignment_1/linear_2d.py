@@ -13,8 +13,6 @@ with open('./data/length_weight.csv') as file:
         x_train.append(float(observation[0]))
         y_train.append(float(observation[1]))
 
-list_length = len(x_train)
-
 x_train = torch.tensor([x_train]).reshape(-1, 1)
 y_train = torch.tensor([y_train]).reshape(-1, 1)
 
@@ -40,8 +38,6 @@ for epoch in range(2000000):
     model.loss(x_train, y_train).backward()
     optimizer.step()
     optimizer.zero_grad()
-
-optimizer = torch.optim.SGD([model.b, model.W], 0.00001)
 
 model.state = { 'bias': model.b, 'weight': model.W }
 

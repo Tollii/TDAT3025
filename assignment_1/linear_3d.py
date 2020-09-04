@@ -24,8 +24,8 @@ y_train = data['day'].tolist()
 
 
 # Transform training data
-x_train = torch.tensor(x_train, dtype=torch.float).t()
-y_train = torch.tensor(y_train, dtype=torch.float).t().reshape(-1, 1)
+x_train = torch.tensor(x_train, dtype=torch.float)
+y_train = torch.tensor(y_train, dtype=torch.float).reshape(-1, 1)
 
 
 # Init model instance and optimizer
