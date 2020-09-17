@@ -20,11 +20,10 @@ class Emojis:
 
 
 class EmojiModel(nn.Module):
-    def __init__(self, encoding_size):
+    def __init__(self, encoding_size, label_size):
         super(EmojiModel, self).__init__()
-
         self.lstm = nn.LSTM(encoding_size, 128)  # 128 is the state size
-        self.dense = nn.Linear(128, encoding_size)  # 128 is the state size
+        self.dense = nn.Linear(128, label_size)  # 128 is the state size
 
     def reset(self, batch_size):  # Reset states prior to new input sequence
         zero_state = torch.zeros(1, batch_size, 128)  # Shape: (number of layers, batch size, state size)
@@ -33,7 +32,7 @@ class EmojiModel(nn.Module):
 
     def logits(self, x):  # x shape: (sequence length, batch size, encoding size)
         out, (self.hidden_state, self.cell_state) = self.lstm(x, (self.hidden_state, self.cell_state))
-        return self.dense(out.reshape(-1, 128))
+        return self.dense(out[-1].reshape(-1, 128))
 
     def f(self, x):  # x shape: (sequence length, batch size, encoding size)
         return torch.softmax(self.logits(x), dim=1)
@@ -43,28 +42,28 @@ class EmojiModel(nn.Module):
 
 
 data = Emojis([
-    ['hat', '🎩'],
-    ['rat', '🐀'],
-    ['man', '👨'],
-    ['poo', '💩'],
+    ['hat ', '🎩'],
+    ['rat ', '🐀'],
+    ['cat ', '🐈'],
+    ['flat', '🏠'],
+    ['matt', '👨'],
+    ['cap ', '🧢'],
+    ['son ', '👦']
     ])
 
-x_train = torch.tensor(data.encode_words(), dtype=torch.float).transpose(0, 1)
-y_train = torch.tensor(np.identity(np.shape(x_train)[1]), dtype=torch.float)
-
-
-print(x_train)
-print(y_train)
-
-model = EmojiModel(len(data.unique_characters))
+word_length = len(data.data[0][0])
 
 def generate(label):
     model.reset(1)
     encoding = [data.encode_character(char) for char in label]
-    y = model.f(torch.tensor(encoding, dtype=torch.float).detach().reshape(4, 1, -1))
-    return dataset.encoding_to_word(y)
+    y = model.f(torch.tensor(encoding, dtype=torch.float).detach().reshape(word_length, 1, -1))
+    return data.encoding_to_word(y)
 
 
+x_train = torch.tensor(data.encode_words(), dtype=torch.float).transpose(0, 1)
+y_train = torch.tensor(np.identity(np.shape(x_train)[1]), dtype=torch.float)
+
+model = EmojiModel(len(data.unique_characters), np.shape(y_train)[1])
 learning_rate = 0.001
 epochs = 500
 optimizer = torch.optim.RMSprop(model.parameters(), learning_rate)
@@ -76,5 +75,12 @@ for epoch in range(epochs):
     optimizer.step()
     optimizer.zero_grad()
 
-    if epoch % 10 == 9:
-        print(generate('poo'))
+    if epoch % 100 == 9:
+        print(f'''
+        rt -> {generate("rt  ")}
+        rat -> {generate("rat ")}
+        ca -> {generate("ca  ")}
+        matt -> {generate("matt")}
+        son -> {generate("son ")}
+        sn -> {generate("sn  ")}
+        ''')
