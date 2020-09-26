@@ -17,3 +17,6 @@ venv/
 
 # Compressed files
 *.tar.gz
+
+# Other
+data/

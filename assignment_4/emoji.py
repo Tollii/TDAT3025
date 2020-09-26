@@ -83,4 +83,5 @@ for epoch in range(epochs):
         matt -> {generate("matt")}
         son -> {generate("son ")}
         sn -> {generate("sn  ")}
+        pat -> {generate("pat ")}
         ''')
