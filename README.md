@@ -9,11 +9,11 @@ Course TDAT3025; Applied machine learning
 
 * Assignment 4 - [Recurrent neural networks](/assignment_4)
 
-* Asignment 5 - [?](/assignment_5)
+* Asignment 5 - [Feature exploration](/assignment_5/assignment_5.ipynb)
 
-* Assignment 6 - [?](/assignment_6)
+* Assignment 6 - [Dimension reduction](/assignment_6/assignment_6.ipynb)
 
-* Assignment 7 - [?](/assignment_7)
+* Assignment 7 - [Unsupervised learning](/assignment_7)
 
 * Assignment 8 - [?](/assignment_8)
 
