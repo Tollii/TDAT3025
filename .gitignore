@@ -14,9 +14,8 @@ venv/
 # misc
 .DS_Store
 .Python
+data/
+.ipynb_checkpoints/
 
 # Compressed files
 *.tar.gz
-
-# Other
-data/
