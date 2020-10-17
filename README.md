@@ -15,8 +15,4 @@ Course TDAT3025; Applied machine learning
 
 * Assignment 7 - [Unsupervised learning](/assignment_7)
 
-* Assignment 8 - [?](/assignment_8)
-
-* Assignment 9 - [?](/assignment_9)
-
-* Assignment 10 - [?](/assignment_10)
+* Assignment 8 - [Reinforcement Learning](/assignment_8)
